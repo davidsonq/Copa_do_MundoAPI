@@ -1,66 +1,257 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## 1. Endpoints
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Rotas e Endpoints
 
-## About Laravel
+-   [Team](#1-team)
+-   [POST - api/teams](#11-criação-de-times)
+-   [GET - api/teams](#12-listando-times)
+-   [GET - api/teams/:id](#13-listar-time-por-id)
+-   [PATCH - api/teams/:id](#14-atualizar-os-dados-do-time)
+-   [DELETE - api/teams/:id](#15-deletando-time)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. **Team**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[ Voltar para os Endpoints ](#1-endpoints)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O objeto Team é definido como:
 
-## Learning Laravel
+| Campo      | Tipo    | Descrição                              |
+| ---------- | ------- | -------------------------------------- |
+| id         | integer | Identificador único do usuário         |
+| name       | string  | O nome do time.                        |
+| titles     | integer | Numero de títulos.                     |
+| top_scorer | string  | O nome do jogador com maior pontuação. |
+| fifa_code  | string  | Código da fifa.                        |
+| first_cup  | date    | Data de participação da primeira copa. |
+| createdAt  | date    | Data de criação do usuário             |
+| updatedAt  | date    | Data que o usuário atualizou seu       |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Endpoints
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Método | Rota           | Descrição                                  |
+| ------ | -------------- | ------------------------------------------ |
+| POST   | /api/teams     | Criação de um time.                        |
+| GET    | /api/teams     | Lista todos os times.                      |
+| GET    | /api/teams/:id | Lista um time usando seu ID como parâmetro |
+| PATCH  | /api/teams/:id | Atualização dos dados do time.             |
+| DELETE | /api/teams/:id | Deleta o time passando o ID                |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1.1 **Criação de Times**
 
-## Laravel Sponsors
+[ Voltar para os Endpoints ](#1-endpoints)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### `POST /api/teams`
 
-### Premium Partners
+### Body para a requisição:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```json
+{
+    "name": "Argentina",
+    "titles": 2,
+    "top_scorer": "Maradona",
+    "fifa_code": "ARG",
+    "first_cup": "1930-07-13"
+}
+```
 
-## Contributing
+### Exemplo de Response:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+STATUS: 201 Created
+```
 
-## Code of Conduct
+```json
+{
+    "name": "Argentina",
+    "titles": 2,
+    "top_scorer": "Maradona",
+    "fifa_code": "ARG",
+    "first_cup": "1930-07-13T00:00:00.000000Z",
+    "updated_at": "2023-02-20T22:10:02.000000Z",
+    "created_at": "2023-02-20T22:10:02.000000Z",
+    "id": 9
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Possíveis Erros:
 
-## Security Vulnerabilities
+| Código do Erro  | Descrição                                          |
+| --------------- | -------------------------------------------------- |
+| 409 Conflict    | The fifa code has already been taken.              |
+| 400 Bad Request | titles cannot be negative.                         |
+| 400 Bad Request | there was no world cup this year.                  |
+| 400 Bad Request | impossible to have more titles than disputed cups. |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### 1.2. **Listando Times**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[ Voltar aos Endpoints ](#1-endpoints)
+
+### `GET /api/teams`
+
+### Body para a requisição:
+
+```json
+No-Body
+```
+
+### Exemplo de Response:
+
+```
+STATUS: 200 OK
+```
+
+```json
+[
+    {
+        "id": 9,
+        "name": "Argentina",
+        "titles": 2,
+        "top_scorer": "Maradona",
+        "fifa_code": "ARG",
+        "first_cup": "1930-07-13T00:00:00.000000Z",
+        "created_at": "2023-02-20T22:10:02.000000Z",
+        "updated_at": "2023-02-20T22:10:02.000000Z"
+    },
+    {
+        "id": 10,
+        "name": "Brasil",
+        "titles": 5,
+        "top_scorer": "Pelé",
+        "fifa_code": "BRA",
+        "first_cup": "1930-07-13T00:00:00.000000Z",
+        "created_at": "2023-02-20T22:15:31.000000Z",
+        "updated_at": "2023-02-20T22:15:31.000000Z"
+    }
+]
+```
+
+---
+
+### 1.3. **Listar time por ID**
+
+[ Voltar aos Endpoints ](#1-endpoints)
+
+### `GET /api/teams:id`
+
+### Parâmetros da Requisição:
+
+| Parâmetro | Tipo    | Descrição         |
+| --------- | ------- | ----------------- |
+| id        | integer | ID do time (Team) |
+
+### Body para a Requisição:
+
+```json
+No-Body
+```
+
+### Exemplo de Response:
+
+```
+200 OK
+```
+
+```json
+{
+    "id": 9,
+    "name": "Argentina",
+    "titles": 3,
+    "top_scorer": "Lionel Messi",
+    "fifa_code": "ARG",
+    "first_cup": "1930-07-13T00:00:00.000000Z",
+    "created_at": "2023-02-20T22:10:02.000000Z",
+    "updated_at": "2023-02-20T22:21:59.000000Z"
+}
+```
+
+### Possíveis Erros:
+
+| Código do Erro | Descrição       |
+| -------------- | --------------- |
+| 404 Not Found  | Team not found. |
+
+---
+
+### 1.4 **Atualizar os dados do time**
+
+[ Voltar aos Endpoints ](#1-endpoints)
+
+### `PATCH /api/teams:id`
+
+### Parâmetros da Requisição:
+
+| Parâmetro | Tipo    | Descrição  |
+| --------- | ------- | ---------- |
+| id        | integer | ID do time |
+
+### Body para a requisição:
+
+```json
+{
+    "top_scorer": "Lionel Messi",
+    "titles": 3
+}
+```
+
+### Exemplo de Response:
+
+```
+STATUS: 200 OK
+```
+
+```json
+{
+    "id": 9,
+    "name": "Argentina",
+    "titles": 3,
+    "top_scorer": "Lionel Messi",
+    "fifa_code": "ARG",
+    "first_cup": "1930-07-13T00:00:00.000000Z",
+    "created_at": "2023-02-20T22:10:02.000000Z",
+    "updated_at": "2023-02-20T22:21:59.000000Z"
+}
+```
+
+### Possíveis Erros:
+
+| Código do Erro  | Descrição                                          |
+| --------------- | -------------------------------------------------- |
+| 404 Not Found   | Team not found.                                    |
+| 409 Conflict    | The fifa code has already been taken.              |
+| 400 Bad Request | titles cannot be negative.                         |
+| 400 Bad Request | there was no world cup this year.                  |
+| 400 Bad Request | impossible to have more titles than disputed cups. |
+
+---
+
+### 1.5 **Deletando time**
+
+[ Voltar aos Endpoints ](#1-endpoints)
+
+### `DELETE /api/teams:id`
+
+### Parâmetros da Requisição:
+
+| Parâmetro | Tipo    | Descrição  |
+| --------- | ------- | ---------- |
+| id        | integer | ID do time |
+
+### Body para a requisição:
+
+```json
+No-Body
+```
+
+### Exemplo de Response:
+
+```
+STATUS: 204 - No Content
+```
+
+### Possíveis Erros:
+
+| Código do Erro | Descrição       |
+| -------------- | --------------- |
+| 404 Not Found  | Team not found. |
