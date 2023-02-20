@@ -36,6 +36,11 @@ class TeamController extends Controller
             ]);
         
             if ($validator->fails()) {
+                if($validator->errors()->first() == "The fifa code has already been taken."){
+                    return response()->json([
+                        'error' => $validator->errors()->first(),
+                    ], 409);
+                }
                 return response()->json([
                     'error' => $validator->errors()->first(),
                 ], 400);
