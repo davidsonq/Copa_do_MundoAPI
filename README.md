@@ -23,8 +23,8 @@ O objeto Team é definido como:
 | top_scorer | string  | O nome do jogador com maior pontuação. |
 | fifa_code  | string  | Código da fifa.                        |
 | first_cup  | date    | Data de participação da primeira copa. |
-| createdAt  | date    | Data de criação do usuário             |
-| updatedAt  | date    | Data que o usuário atualizou seu       |
+| createdAt  | date    | Data de criação do time             |
+| updatedAt  | date    | Data que o time atualizou       |
 
 ### Endpoints
 
