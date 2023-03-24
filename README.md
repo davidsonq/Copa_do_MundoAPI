@@ -17,7 +17,7 @@ O objeto Team é definido como:
 
 | Campo      | Tipo    | Descrição                              |
 | ---------- | ------- | -------------------------------------- |
-| id         | integer | Identificador único do usuário         |
+| id         | integer | Identificador único do time         |
 | name       | string  | O nome do time.                        |
 | titles     | integer | Numero de títulos.                     |
 | top_scorer | string  | O nome do jogador com maior pontuação. |
